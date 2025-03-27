@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AJAX Auto Suggestions Example</title>
+    <script>
+        // Function to fetch suggestions based on user input
+        function fetchSuggestions(str) {
+            if (str.length == 0) {
+                document.getElementById("suggestions").innerHTML = "";
+                return;
+            }
+
+            // Array of suggestions
+            var suggestions = ["apple", "banana", "cherry", "dates", "elderberry", "fig",
+                                "grape", "honeydew", "kiwi", "lemon"];
+            var matches = [];
+
+            // Find matches that start with the input string
+            for (var i = 0; i < suggestions.length; i++) {
+                if (suggestions[i].toLowerCase().startsWith(str.toLowerCase())) {
+                    matches.push(suggestions[i]);
+                }
+            }
+
+            // Display the matching suggestions
+            if (matches.length > 0) {
+                document.getElementById("suggestions").innerHTML = matches.join("<br>");
+            } else {
+                document.getElementById("suggestions").innerHTML = "No suggestions found";
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Input field with onkeyup event to trigger fetchSuggestions -->
+    <h2>AJAX Auto Suggestions Example</h2>
+    <input type="text" onkeyup="fetchSuggestions(this.value)" placeholder="Type a fruit name">
+    <div id="suggestions" style="margin-top: 10px; color: green;"></div>
+
+</body>
+</html>
+
+
+Q2
+
+# Import pandas
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Create the dataset
+data = {
+    'No': [1, 2, 3, 4],
+    'Company': ['Tata', 'MG', 'Kia', 'Hyundai'],
+    'Model': ['Nexon', 'Astor', 'Seltos', 'Creta'],
+    'Year': [2017, 2021, 2019, 2015]
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Convert categorical values into numeric format using category encoding
+df['Company'] = pd.Categorical(df['Company']).codes
+df['Model'] = pd.Categorical(df['Model']).codes
+
+print("Dataset after encoding:")
+print(df)
+
+# Prepare the data for apriori (Transaction Data)
+# Drop the 'No' column as it's not required for association rule mining
+transactions = df.drop(columns=['No'])
+
+# Convert the DataFrame into a list of lists
+transactions_list = transactions.apply(lambda x: list(x), axis=1).tolist()
+
+# Encode the transaction data into one-hot encoded format
+te = TransactionEncoder()
+te_ary = te.fit(transactions_list).transform(transactions_list)
+df_encoded = pd.DataFrame(te_ary, columns=te.columns_)
+
+# Generate frequent itemsets with min_support = 0.5
+frequent_itemsets = apriori(df_encoded, min_support=0.5, use_colnames=True)
+print("\nFrequent itemsets with min_support = 0.5:")
+print(frequent_itemsets)
+
+# Generate association rules with min_threshold = 0.7
+rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.7)
+print("\nAssociation rules with min_confidence = 0.7:")
+print(rules)

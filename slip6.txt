@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book isbn="978-3-16-148410-0" publisher="ExamplePublisher">
+    <title>Example Book</title>
+    <author>John Doe</author>
+    <description>This is an example book.</description>
+</book>
+
+
+-
+
+<?php
+// Load the XML file into a SimpleXML object
+$xml = simplexml_load_file("book.xml");
+
+// Check if XML is loaded successfully
+if ($xml === false) {
+    die("Error loading XML file.");
+}
+
+// Display the attributes and elements of the SimpleXML object
+echo "Book attributes:<br>";
+echo "ISBN: " . $xml['isbn'] . "<br>";
+echo "Publisher: " . $xml['publisher'] . "<br>";
+echo "<br>";
+
+echo "Book elements:<br>";
+echo "Title: " . $xml->title . "<br>";
+echo "Author: " . $xml->author . "<br>";
+echo "Description: " . $xml->description . "<br>";
+?>
+
+
+Q2
+
+# Import required libraries
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+
+# Create the dataset
+TID = {
+    1: ["bread", "milk"],
+    2: ["bread", "diaper", "beer", "eggs"],
+    3: ["milk", "diaper", "beer", "coke"],
+    4: ["bread", "milk", "diaper", "beer"],
+    5: ["bread", "milk", "diaper", "coke"]
+}
+
+# Prepare transactions list
+transactions = []
+for key, value in TID.items():
+    transactions.append(value)
+
+# Convert categorical values into numeric format
+te = TransactionEncoder()
+te_ary = te.fit_transform(transactions)
+df = pd.DataFrame(te_ary, columns=te.columns_)
+
+# Apply the apriori algorithm with different min_support values
+min_sup_values = [0.2, 0.4, 0.6]
+for min_sup in min_sup_values:
+    frequent_itemsets = apriori(df, min_support=min_sup, use_colnames=True)
+    rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.7)
+    
+    print(f"Min_sup: {min_sup}")
+    print("Frequent Itemsets:")
+    print(frequent_itemsets)
+    print("Association Rules:")
+    print(rules)
+    print("=" * 50)

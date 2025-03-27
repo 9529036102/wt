@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Details</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>Select Teacher to Get Details</h2>
+    
+    <!-- Dropdown to select teacher -->
+    <select id="teacher-list">
+        <option value="">--Select Teacher--</option>
+        <option value="1">John Doe</option>
+        <option value="2">Jane Smith</option>
+        <option value="3">Bob Johnson</option>
+    </select>
+    
+    <!-- Button to submit the request -->
+    <button id="submit-btn">Get Details</button>
+    
+    <!-- Div to display teacher details -->
+    <div id="details"></div>
+    
+    <script>
+        $(document).ready(function () {
+            // Event listener for button click
+            $('#submit-btn').click(function () {
+                var tno = $('#teacher-list').val(); // Get selected teacher ID
+                
+                // Validate if the teacher is selected
+                if (tno === '') {
+                    alert('Please select a teacher.');
+                    return;
+                }
+
+                // AJAX request to fetch teacher details
+                $.ajax({
+                    url: 'teacherdetails.php',  // URL to the PHP file
+                    method: 'POST',
+                    data: { tno: tno },
+                    success: function (response) {
+                        // Display response in the 'details' div
+                        $('#details').html(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+<?php
+// Connect to the database
+$servername = "localhost";
+$username = "username";  // Replace with your DB username
+$password = "password";  // Replace with your DB password
+$dbname = "database_name";  // Replace with your DB name
+
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Retrieve selected teacher details
+if (isset($_POST['tno'])) {
+    $tno = $_POST['tno'];
+    $sql = "SELECT * FROM TEACHER WHERE tno='$tno'";
+    $result = mysqli_query($conn, $sql);
+
+    // Check if teacher is found
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        echo "Teacher Name: " . $row['tname'] . "<br>";
+        echo "Qualification: " . $row['qualification'] . "<br>";
+        echo "Salary: " . $row['salary'] . "<br>";
+    } else {
+        echo "No data found.";
+    }
+}
+
+// Close database connection
+mysqli_close($conn);
+?>
+
+
+Q2
+
+# Import required libraries
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori
+
+# Create the dataset
+TID = {
+    1: ["apple", "mango", "banana"],
+    2: ["mango", "banana", "cabbage", "carrots"],
+    3: ["mango", "banana", "carrots"],
+    4: ["mango", "carrots"]
+}
+
+# Convert the categorical values into numeric format using TransactionEncoder
+te = TransactionEncoder()
+te_ary = te.fit([TID[i] for i in TID]).transform([TID[i] for i in TID])
+
+# Create a DataFrame
+df = pd.DataFrame(te_ary, columns=te.columns_)
+
+# Apply the apriori algorithm with different min_sup values
+min_sup_values = [0.25, 0.5, 0.75]
+
+# Loop through different min_sup values and print frequent itemsets
+for min_sup in min_sup_values:
+    frequent_itemsets = apriori(df, min_support=min_sup, use_colnames=True)
+    print(f"Frequent itemsets with min_sup = {min_sup}")
+    print(frequent_itemsets)
+    print("\n")
+

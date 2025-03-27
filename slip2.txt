@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set Preferences</title>
+</head>
+<body>
+    <form action="1.php" method="get">
+        <center>
+            <b>Select font style:</b> <input type="text" name="s1"><br><br>
+            <b>Enter font size:</b> <input type="text" name="s"><br><br>
+            <b>Enter font color:</b> <input type="text" name="c"><br><br>
+            <b>Enter background color:</b> <input type="text" name="b"><br><br>
+            <input type="submit" value="Next">
+        </center>
+    </form>
+</body>
+</html>
+
+<?php
+// Check if all values are set
+if (isset($_GET['s1']) && isset($_GET['s']) && isset($_GET['c']) && isset($_GET['b'])) {
+    // Get values from the form
+    $style = $_GET['s1'];
+    $size = $_GET['s'];
+    $color = $_GET['c'];
+    $bgcolor = $_GET['b'];
+
+    // Set cookies valid for 1 hour (3600 seconds)
+    setcookie("set1", $style, time() + 3600);
+    setcookie("set2", $color, time() + 3600);
+    setcookie("set3", $bgcolor, time() + 3600);
+    setcookie("set4", $size, time() + 3600);
+
+    echo "Style is <b>$style</b>, Color is <b>$color</b>, Background color is <b>$bgcolor</b>, Size is <b>$size</b>.";
+} else {
+    echo "All fields are required!";
+}
+?>
+<br><br>
+<a href="2.php">Show Results</a>
+
+<?php
+// Check if cookies are set
+$style = isset($_COOKIE['set1']) ? $_COOKIE['set1'] : 'Arial';
+$color = isset($_COOKIE['set2']) ? $_COOKIE['set2'] : '#000000';
+$bgcolor = isset($_COOKIE['set3']) ? $_COOKIE['set3'] : '#FFFFFF';
+$size = isset($_COOKIE['set4']) ? $_COOKIE['set4'] : '12';
+
+// Display message with applied preferences
+$msg = "Hello PHP";
+
+echo "<body bgcolor=\"$bgcolor\">";
+echo "<font color=\"$color\" size=\"$size\" face=\"$style\">$msg</font>";
+echo "</body>";
+?>
+
+
+
+Q2
+
+# Import required libraries
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+# Create the Salary dataset
+data = {
+    'YearsExperience': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    'Salary': [50000, 60000, 70000, 80000, 90000, 100000, 110000, 120000, 130000, 140000]
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Identify the independent (X) and target (Y) variables
+X = df.iloc[:, 0:1].values  # Independent variable (YearsExperience)
+y = df.iloc[:, 1].values    # Target variable (Salary)
+
+# Split the data into training and testing sets (70% training, 30% testing)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Print the training and testing sets
+print("X_train:\n", X_train)
+print("y_train:\n", y_train)
+print("X_test:\n", X_test)
+print("y_test:\n", y_test)
+
+# Build a simple linear regression model
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
+
+# Print the coefficients and intercept
+print("Coefficients:", regressor.coef_)
+print("Intercept:", regressor.intercept_)
+
+

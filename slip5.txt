@@ -1,0 +1,84 @@
+<?php
+// Load the XML file
+$xml = simplexml_load_file('Item.xml');
+
+// Iterate through each item and display its details
+foreach ($xml->Item as $item) {
+    echo "Item Name: " . $item->ItemName . "<br>";
+    echo "Item Rate: " . $item->ItemRate . "<br>";
+    echo "Item Quantity: " . $item->ItemQuantity . "<br><br>";
+}
+?>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Items>
+    <Item>
+        <ItemName>Apple</ItemName>
+        <ItemRate>0.50</ItemRate>
+        <ItemQuantity>100</ItemQuantity>
+    </Item>
+    <Item>
+        <ItemName>Banana</ItemName>
+        <ItemRate>0.30</ItemRate>
+        <ItemQuantity>150</ItemQuantity>
+    </Item>
+    <Item>
+        <ItemName>Orange</ItemName>
+        <ItemRate>0.60</ItemRate>
+        <ItemQuantity>80</ItemQuantity>
+    </Item>
+    <Item>
+        <ItemName>Milk</ItemName>
+        <ItemRate>1.20</ItemRate>
+        <ItemQuantity>50</ItemQuantity>
+    </Item>
+    <Item>
+        <ItemName>Bread</ItemName>
+        <ItemRate>1.00</ItemRate>
+        <ItemQuantity>200</ItemQuantity>
+    </Item>
+</Items>
+
+
+Q2
+
+# Import required libraries
+import pandas as pd
+from sklearn.datasets import load_iris
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Load the Iris dataset
+Iris = load_iris()
+
+# Create a DataFrame from the dataset
+df = pd.DataFrame(Iris.data, columns=Iris.feature_names)
+df['target'] = Iris.target
+
+# View basic statistical details of the different species
+print("Statistical details of Iris-setosa:")
+print(df[df['target'] == 0].describe())
+
+print("\nStatistical details of Iris-versicolor:")
+print(df[df['target'] == 1].describe())
+
+print("\nStatistical details of Iris-virginica:")
+print(df[df['target'] == 2].describe())
+
+# Split the data into training and testing sets
+X = df.iloc[:, :-1]  # Features
+y = df.iloc[:, -1]   # Target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Fit a logistic regression model
+Logreg = LogisticRegression(max_iter=200)  # Increase iterations to avoid convergence warning
+Logreg.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = Logreg.predict(X_test)
+
+# Calculate the accuracy of the model
+accuracy = accuracy_score(y_test, y_pred)
+print("\nAccuracy of the logistic regression model:", accuracy)
