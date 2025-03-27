@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fibonacci Numbers</title>
+    <script>
+        function generateFibonacci() {
+            // Get the input value from the user
+            var input = document.getElementById("inputNumber").value;
+            var output = document.getElementById("output");
+
+            // Convert the input to a number
+            var n = parseInt(input);
+
+            // Check if input is a valid positive number
+            if (isNaN(n) || n < 1) {
+                output.innerHTML = "Please enter a valid positive number.";
+                return;
+            }
+
+            // Create an array to store the Fibonacci sequence
+            var fib = [];
+
+            // Calculate the Fibonacci sequence up to n
+            fib[0] = 0;
+            fib[1] = 1;
+            for (var i = 2; i < n; i++) {
+                fib[i] = fib[i - 1] + fib[i - 2];
+            }
+
+            // Display the Fibonacci sequence
+            output.innerHTML = "Fibonacci sequence up to " + n + ": " + fib.join(", ");
+        }
+    </script>
+</head>
+<body>
+    <h1>Fibonacci Numbers</h1>
+    <p>Enter a number:</p>
+    <input type="number" id="inputNumber">
+    <button onclick="generateFibonacci()">Generate Fibonacci</button>
+    <p id="output"></p>
+</body>
+</html>
+
+
+
+Q.2)
+
+# Install required libraries (uncomment below if running in a new environment)
+# !pip install nltk matplotlib wordcloud
+
+# Import necessary modules
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.probability import FreqDist
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+
+# Download required NLTK resources
+nltk.download('stopwords')
+nltk.download('punkt')
+
+# Define the text paragraph
+text = """Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Sed tristique ante et velit vestibulum, vel pharetra orci iaculis. 
+Nullam mattis risus quis augue tincidunt rhoncus. Morbi varius, 
+arcu vitae scelerisque laoreet, magna est imperdiet quam, 
+sit amet ultrices lectus justo id enim. Sed dictum suscipit commodo. 
+Sed maximus consequat risus, nec pharetra nibh interdum quis. 
+Etiam eget quam vel augue dictum dignissim sit amet nec elit. 
+Nunc at sapien dolor. Nulla vitae iaculis lorem. Suspendisse potenti. 
+Sed non ante turpis. Morbi consectetur, arcu a vestibulum suscipit, 
+mauris eros convallis nibh, nec feugiat orci enim sit amet enim. 
+Aliquam erat volutpat. Etiam vel nisi id neque viverra dapibus non non lectus."""
+
+# Tokenize the paragraph to extract words and sentences
+words = word_tokenize(text.lower())  # Convert text to lowercase
+sentences = sent_tokenize(text)
+
+# Remove stopwords from the extracted words
+stop_words = set(stopwords.words('english'))
+filtered_words = [word for word in words if word.isalnum() and word not in stop_words]  # Keep only alphanumeric words
+
+# Calculate the word frequency distribution and plot the frequencies using matplotlib
+fdist = FreqDist(filtered_words)
+fdist.plot(30, cumulative=False)
+plt.show()
+
+# Plot the Word Cloud of the text using WordCloud
+wordcloud = WordCloud(
+    width=800, height=800,
+    background_color='white',
+    stopwords=stop_words,
+    min_font_size=10
+).generate(" ".join(filtered_words))  # Join words for proper word cloud display
+
+# Plot the Word Cloud image
+plt.figure(figsize=(8, 8), facecolor=None)
+plt.imshow(wordcloud, interpolation="bilinear")
+plt.axis("off")
+plt.tight_layout(pad=0)
+plt.show()

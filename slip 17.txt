@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <script>
+        window.onload = function () {
+            alert("Hello! Good Morning!");
+        };
+    </script>
+</head>
+<body>
+    <h1>Student Registration Form</h1>
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required><br><br>
+
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" required></textarea><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+2)
+
+
+import re
+from nltk.tokenize import sent_tokenize
+
+# Text paragraph
+text = """So, keep working. Keep striving. Never give up. Fall down seven times, get up eight. 
+Ease is a greater threat to progress than hardship. Ease is a greater threat to progress than hardship. 
+So, keep moving, keep growing, keep learning. See you at work."""
+
+# Remove special characters and digits (but preserve spaces)
+clean_text = re.sub(r'[^A-Za-z\s.]+', '', text)
+
+# Tokenize the sentences
+sentences = sent_tokenize(clean_text)
+
+# Calculate the score of each sentence based on the number of words
+scores = {}
+for sentence in sentences:
+    words = sentence.split()
+    score = len(words)
+    scores[sentence] = score
+
+# Sort the sentences based on their scores
+sorted_sentences = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+
+# Extract the top 2 sentences with the highest scores as the summary
+summary_sentences = [sentence[0] for sentence in sorted_sentences[:2]]
+summary = " ".join(summary_sentences)
+
+# Print the summary
+print(summary)

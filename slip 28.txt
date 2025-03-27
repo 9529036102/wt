@@ -1,0 +1,110 @@
+Q.1)
+
+html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#login-form").submit(function(event){
+                event.preventDefault(); // Prevent form submission
+
+                var username = $("#username").val();
+                var password = $("#password").val();
+
+                $.ajax({
+                    url: 'check_login.php',
+                    type: 'POST',
+                    data: { username: username, password: password },
+                    success: function(response){
+                        if(response.trim() == "valid"){
+                            window.location.href = "dashboard.php"; // Redirect to dashboard
+                        } else {
+                            alert("Invalid username or password");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="login-form" method="post">
+        <label>Username:</label>
+        <input type="text" name="username" id="username" required><br><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" id="password" required><br><br>
+
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+
+php
+
+
+<?php
+// Establish database connection
+$conn = mysqli_connect('localhost', 'username', 'password', 'database_name');
+
+// Check if connection was successful
+if (!$conn) {
+    die('Connection failed: ' . mysqli_connect_error());
+}
+
+// Get username and password from AJAX request
+$username = mysqli_real_escape_string($conn, $_POST['username']);
+$password = mysqli_real_escape_string($conn, $_POST['password']);
+
+// Query the users table for the entered username and password
+$sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+$result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    echo "valid";
+} else {
+    echo "invalid";
+}
+
+// Close database connection
+mysqli_close($conn);
+?>
+
+
+Q.2)
+
+# Import necessary libraries
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Load the dataset
+data = pd.read_csv('student_scores.csv')
+
+# Split the data into input (X) and output (y) variables
+X = data.iloc[:, :-1].values
+y = data.iloc[:, -1].values
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+
+# Create the logistic regression model and fit it to the training data
+classifier = LogisticRegression(max_iter=1000, random_state=0)
+classifier.fit(X_train, y_train)
+
+# Make predictions on the testing set
+y_pred = classifier.predict(X_test)
+
+# Evaluate the model’s accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+# Print results
+print("Accuracy:", accuracy)
+print("Predictions:", y_pred[:10])  # Show first 10 predictions
+print("Actual:", y_test[:10])  # Show first 10 actual values
