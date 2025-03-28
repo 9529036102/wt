@@ -78,35 +78,27 @@ mysqli_close($conn);
 
 Q.2)
 
- Fromsklearn.l
- inear_modelimportLi
- Mileage=[[10],[
- 20],[30]
- Price=[24,19,17,13,10,7,5,2]
- Reg=LinearRegression().
- Print(‘
- Intercept:
- ’,reg.
- Print(‘
- Coeffici
- ent:’
- intercept_)
- ,reg.coef_[
- New_mileage=[[25],[45],[
- Predicted_pri
- nearRegressi
- on
- ,[40],[
- 50],[60]
- ,[70],[
- fit(mi
- leage,pri
- 0])
- 65]]
- ce=reg.predict(new_mi
- Print(‘
- Predictedpri
- ces:’
- leage)
- ,predicted_pri
- ce
+from sklearn.linear_model import LinearRegression
+
+# Define the mileage and price data
+mileage = [[10], [20], [30], [40], [50], [60], [70]]
+price = [24, 19, 17, 13, 10, 7, 5, 2]
+
+# Create a Linear Regression model
+reg = LinearRegression()
+
+# Fit the model to the data
+reg.fit(mileage, price)
+
+# Print the intercept and coefficient
+print('Intercept:', reg.intercept_)
+print('Coefficient:', reg.coef_)
+
+# Define new mileage values for prediction
+new_mileage = [[25], [45], [65]]
+
+# Predict prices for the new mileage values
+predicted_price = reg.predict(new_mileage)
+
+# Print the predicted prices
+print('Predicted prices:', predicted_price)
