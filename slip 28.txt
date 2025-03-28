@@ -78,33 +78,35 @@ mysqli_close($conn);
 
 Q.2)
 
-# Import necessary libraries
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-
-# Load the dataset
-data = pd.read_csv('student_scores.csv')
-
-# Split the data into input (X) and output (y) variables
-X = data.iloc[:, :-1].values
-y = data.iloc[:, -1].values
-
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-# Create the logistic regression model and fit it to the training data
-classifier = LogisticRegression(max_iter=1000, random_state=0)
-classifier.fit(X_train, y_train)
-
-# Make predictions on the testing set
-y_pred = classifier.predict(X_test)
-
-# Evaluate the model’s accuracy
-accuracy = accuracy_score(y_test, y_pred)
-
-# Print results
-print("Accuracy:", accuracy)
-print("Predictions:", y_pred[:10])  # Show first 10 predictions
-print("Actual:", y_test[:10])  # Show first 10 actual values
+ Fromsklearn.l
+ inear_modelimportLi
+ Mileage=[[10],[
+ 20],[30]
+ Price=[24,19,17,13,10,7,5,2]
+ Reg=LinearRegression().
+ Print(‘
+ Intercept:
+ ’,reg.
+ Print(‘
+ Coeffici
+ ent:’
+ intercept_)
+ ,reg.coef_[
+ New_mileage=[[25],[45],[
+ Predicted_pri
+ nearRegressi
+ on
+ ,[40],[
+ 50],[60]
+ ,[70],[
+ fit(mi
+ leage,pri
+ 0])
+ 65]]
+ ce=reg.predict(new_mi
+ Print(‘
+ Predictedpri
+ ces:’
+ leage)
+ ,predicted_pri
+ ce
